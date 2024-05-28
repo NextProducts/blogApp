@@ -1,0 +1,62 @@
+{
+  "user": [],
+  "posts": [
+    {
+      "username": "ab",
+      "body": "Integer sit amet finibus arcu. Nunc sed lacus semper nisl euismod egestas. Vestibulum blandit lorem ut purus dignissim, ut ultricies libero placerat. Sed faucibus ligula in augue congue, tempus viverra urna convallis. Phasellus odio risus, pulvinar eu ullamcorper eget, dignissim in neque. Phasellus facilisis",
+      "liked": {
+        "abcd": true
+      },
+      "disliked": {},
+      "like": 1,
+      "dislike": 0,
+      "comments": [
+        {
+          "username": "abcd",
+          "comment": "hi"
+        },
+        {
+          "username": "cd",
+          "comment": "hi there"
+        },
+        {
+          "username": "abcde",
+          "comment": "I am new here"
+        },
+        {
+          "username": "abcd",
+          "comment": "sd"
+        }
+      ],
+      "id": "71fa"
+    },
+    {
+      "username": "Shashwat_Shandilya",
+      "body": "Integer sit amet finibus arcu. Nunc sed lacus semper nisl euismod egestas. Vestibulum blandit lorem ut purus dignissim, ut ultricies libero placerat. Sed faucibus ligula in augue congue, tempus viverra urna convallis. Phasellus odio risus, pulvinar eu ullamcorper eget, dignissim in neque. Phasellus facilisis",
+      "liked": {
+        "abcd": true,
+        "cd": true,
+        "abcde": true
+      },
+      "disliked": {},
+      "like": 3,
+      "dislike": 0,
+      "comments": [],
+      "id": "c26c"
+    },
+    {
+      "id": "48aa1a6d-e32e-4ebe-90a1-7920bd85a1be",
+      "body": "hi",
+      "username": "abcd",
+      "liked": {
+        "user1": true,
+        "avc": true,
+        "abcd": true
+      },
+      "like": 3,
+      "dislike": 0,
+      "disliked": {},
+      "comments": []
+    }
+  ]
+}
