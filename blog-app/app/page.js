@@ -15,23 +15,22 @@ export default function Home() {
 
   const posts = useSelector(({ post }) => post.posts);
   useEffect(() => {
-    if (!localStorage.getItem("username")) router.push("/login");
     dispatch(fetchPost());
   }, []);
+
   const [showComment, setShowComment] = useState(null);
   const [createPost, setCreatePost] = useState(false);
 
   return (
     <main className="flex ">
       <article className="flex-1 flex flex-col items-center px-4">
-        {posts.map((curr) => {
+        {posts.map((curr, index) => {
           return (
             <Post
-              posts={posts}
               post={curr}
-              post_id={curr.id}
+              index={index}
+              key={curr.post_id}
               setShowComment={setShowComment}
-              key={curr.id}
             />
           );
         })}
@@ -46,11 +45,7 @@ export default function Home() {
         </label>
       </article>
       {showComment != null && (
-        <Comments
-          showComment={showComment}
-          posts={posts}
-          setShowComment={setShowComment}
-        />
+        <Comments showComment={showComment} setShowComment={setShowComment} />
       )}
 
       {createPost && <NewPost setCreatePost={setCreatePost} />}

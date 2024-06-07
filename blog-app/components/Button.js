@@ -20,48 +20,54 @@ export default function Button({ type, action, label, icon }) {
   );
 }
 
-function LikeButton({ post_id, post, dispatch, index }) {
-  axios.patch(`http://localhost:8000/posts/${post_id}`, {
-    liked: { ...post.liked },
-    like: post.like,
-  });
+function LikeButton({ post, dispatch, index }) {
   return (
     <Button
-      label={` ${post.like} likes`}
+      label={` ${Object.keys(post.likes).length} likes`}
       icon={
-        !post.liked[localStorage.getItem("username")] ? (
+        !post.likes[localStorage.getItem("username")] ? (
           <AiOutlineLike />
         ) : (
           <AiFillLike />
         )
       }
-      action={() => {
+      action={async () => {
+        const res = await axios.post(
+          `http://localhost:7000/post/${post.post_id}/like`,
+          {
+            username: localStorage.getItem("username"),
+          }
+        );
+
         dispatch(
-          like({ index: index, user: localStorage.getItem("username") })
+          like({ index: index, username: localStorage.getItem("username") })
         );
       }}
     />
   );
 }
 
-function DislikeButton({ post_id, post, dispatch, index }) {
-  axios.patch(`http://localhost:8000/posts/${post_id}`, {
-    disliked: { ...post.disliked },
-    dislike: post.dislike,
-  });
+function DislikeButton({ post, dispatch, index }) {
   return (
     <Button
-      label={` ${post.dislike} dislikes`}
+      label={` ${Object.keys(post.dislikes).length} dislikes`}
       icon={
-        !post.disliked[localStorage.getItem("username")] ? (
+        !post.dislikes[localStorage.getItem("username")] ? (
           <AiOutlineDislike />
         ) : (
           <AiFillDislike />
         )
       }
-      action={() => {
+      action={async () => {
+        const res = await axios.post(
+          `http://localhost:7000/post/${post.post_id}/dislike`,
+          {
+            username: localStorage.getItem("username"),
+          }
+        );
+
         dispatch(
-          dislike({ index: index, user: localStorage.getItem("username") })
+          dislike({ index: index, username: localStorage.getItem("username") })
         );
       }}
     />

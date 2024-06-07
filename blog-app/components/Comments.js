@@ -8,20 +8,26 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Comments({ showComment, posts }) {
   const { register, handleSubmit, resetField } = useForm();
   const dispatch = useDispatch();
+  const post = useSelector(({ post }) => {
+    return post.posts[showComment];
+  });
 
-  const index = posts.findIndex((curr) => curr.id == showComment);
-  const comments = posts[index].comments;
+  const comments = post.comments;
 
-  function onSubmit(data) {
+  async function onSubmit(data) {
     const comment = {
       username: localStorage.getItem("username"),
       comment: data.comment,
     };
     resetField("comment", comment);
-    axios.patch(`http://localhost:8000/posts/${showComment}`, {
-      comments: [...comments, comment],
-    });
-    dispatch(addComment({ postId: index, ...comment }));
+    const newComment = await axios.post(
+      `http://localhost:7000/post/${post.post_id}/comments/new`,
+      comment
+    );
+
+    dispatch(
+      addComment({ postId: showComment, comment: { ...newComment.data } })
+    );
   }
 
   return (
@@ -30,13 +36,18 @@ export default function Comments({ showComment, posts }) {
       <section>
         {comments.map((curr, index) => {
           return (
-            <div
-              key={index}
-              className="border py-2 px-3 rounded-lg mb-2 bg-white"
-            >
-              <h3 className="font-bold">{curr.username}</h3>
-              <p>{curr.comment}</p>
-            </div>
+            <>
+              <section
+                key={index}
+                className="border py-2 px-3 rounded-lg mb-2 bg-white"
+              >
+                <h3 className="font-bold">{curr.UserUsername}</h3>
+                <p className="mb-2 border-b pb-2">{curr.body}</p>
+                <div className=" text-white bg-blue-700  w-min py-2 px-5 rounded-xl cursor-pointer ml-auto ">
+                  reply
+                </div>
+              </section>
+            </>
           );
         })}
       </section>

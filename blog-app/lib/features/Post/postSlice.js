@@ -12,45 +12,31 @@ const postSlice = createSlice({
   reducers: {
     like: (state, action) => {
       const post = state.posts[action.payload.index];
-      if (!post.liked[action.payload.user]) {
-        if (post.disliked[action.payload.user]) {
-          delete post.disliked[action.payload.user];
-        }
-        post.liked[action.payload.user] = true;
+      const username = action.payload.username;
+      if (!post.likes[username]) {
+        if (post.dislikes[username]) delete post.dislikes[username];
+        post.likes[username] = true;
       } else {
-        delete post.liked[action.payload.user];
+        delete post.likes[username];
       }
-
-      post.like = Object.keys(post.liked).length;
-      post.dislike = Object.keys(post.disliked).length;
     },
 
     dislike: (state, action) => {
       const post = state.posts[action.payload.index];
-      console.log(post);
-      if (!post.disliked[action.payload.user]) {
-        if (post.liked[action.payload.user]) {
-          delete post.liked[action.payload.user];
-        }
-        post.disliked[action.payload.user] = true;
+      const username = action.payload.username;
+      if (!post.dislikes[username]) {
+        if (post.likes[username]) delete post.likes[username];
+        post.dislikes[username] = true;
       } else {
-        delete post.disliked[action.payload.user];
+        delete post.dislikes[username];
       }
-
-      post.like = Object.keys(post.liked).length;
-      post.dislike = Object.keys(post.disliked).length;
     },
 
     addComment: (state, action) => {
-      const post = state.posts[action.payload.postId];
-      console.log(post);
-      post.comments = [
-        ...post.comments,
-        {
-          username: action.payload.username,
-          comment: action.payload.comment,
-        },
-      ];
+      let post = state.posts[action.payload.postId];
+      const comments = post.comments;
+
+      post.comments = [...comments, action.payload.comment];
     },
 
     newPost: (state, action) => {
@@ -58,6 +44,9 @@ const postSlice = createSlice({
         ...state.posts,
         {
           ...action.payload,
+          comments: [],
+          likes: {},
+          dislikes: {},
         },
       ];
     },
@@ -71,8 +60,8 @@ const postSlice = createSlice({
 });
 
 export const fetchPost = createAsyncThunk("post/fetch", async () => {
-  const res = await axios.get("http://localhost:8000/posts");
-
+  const res = await axios.get("http://localhost:7000/post");
+  console.log(res);
   return res.data;
 });
 
