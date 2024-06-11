@@ -14,6 +14,7 @@ module.exports = (sequelize) => {
   Comment.associate = (models) => {
     Comment.belongsTo(models.User);
     Comment.belongsTo(models.Post);
+    Comment.hasOne(models.Comment, { as: "Parent" });
   };
   return Comment;
 };

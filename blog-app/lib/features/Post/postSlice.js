@@ -1,4 +1,5 @@
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
@@ -35,7 +36,6 @@ const postSlice = createSlice({
     addComment: (state, action) => {
       let post = state.posts[action.payload.postId];
       const comments = post.comments;
-
       post.comments = [...comments, action.payload.comment];
     },
 
@@ -50,6 +50,20 @@ const postSlice = createSlice({
         },
       ];
     },
+
+    newReply: (state, action) => {
+      let post = state.posts[action.payload.postId];
+      const comments = post.comments;
+      const index = comments.findIndex(
+        (curr) => action.payload.comment.ParentCommentId == curr.comment_id
+      );
+      let nestedComment = post.comments[index]["nestedComment"];
+
+      post.comments[index]["nestedComment"] = [
+        ...nestedComment,
+        action.payload.comment,
+      ];
+    },
   },
 
   extraReducers: (builder) => {
@@ -61,9 +75,9 @@ const postSlice = createSlice({
 
 export const fetchPost = createAsyncThunk("post/fetch", async () => {
   const res = await axios.get("http://localhost:7000/post");
-  console.log(res);
   return res.data;
 });
 
-export const { like, dislike, addComment, newPost } = postSlice.actions;
+export const { like, dislike, addComment, newPost, newReply } =
+  postSlice.actions;
 export default postSlice.reducer;
