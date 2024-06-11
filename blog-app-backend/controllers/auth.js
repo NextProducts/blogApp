@@ -11,14 +11,9 @@ exports.login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       const token = jwt.sign({ username }, dotenv.TOKEN_SECRET, {
-        expiresIn: "1h",
+        expiresIn: 30,
       });
-      res.cookie("token", token, {
-        secure: true,
-        httpOnly: true,
-        sameSite: "none",
-      });
-      return res.status(200).send(req.cookies);
+      return res.status(200).json({ message: "logged in", token: token });
     }
     return res.status(401).send({ message: "Wrong Password" });
   }

@@ -1,11 +1,11 @@
 "use client";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import axios from "axios";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-export default function LoginForm() {
+export default function LoginForm({ getToken }) {
   const {
     handleSubmit,
     register,
@@ -17,25 +17,22 @@ export default function LoginForm() {
 
   const router = useRouter();
   async function onSubmit(data) {
-    try {
-      const res = await axios.post("http://localhost:7000/user/login", data);
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("token", res.data);
+    const res = await getToken(data);
+    if (res.status == 200) {
+      console.log(res);
       router.push("/");
-    } catch (err) {
-      if (err.response.status == 401) {
-        setError("password", {
-          type: "custom",
-          message: err.response.data.message,
-        });
-      }
-
-      if (err.response.status == 404) {
-        setError("username", {
-          type: "custom",
-          message: err.response.data.message,
-        });
-      }
+    }
+    if (res.status == 401) {
+      setError("password", {
+        type: "custom",
+        message: res.message,
+      });
+    }
+    if (res.status == 404) {
+      setError("username", {
+        type: "custom",
+        message: res.message,
+      });
     }
   }
   return (

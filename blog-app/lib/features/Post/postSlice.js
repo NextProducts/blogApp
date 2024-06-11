@@ -1,5 +1,4 @@
 import axios from "axios";
-import { redirect } from "next/navigation";
 
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
