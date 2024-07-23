@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (match) {
       const token = jwt.sign({ username }, dotenv.TOKEN_SECRET, {
-        expiresIn: 30,
+        expiresIn: "1h",
       });
       return res.status(200).json({ message: "logged in", token: token });
     }
